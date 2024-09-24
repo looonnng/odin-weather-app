@@ -1,8 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = requure('path');
+const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/modules/utils.js',
   devtool: 'inline-source-map',
   devServer: {
     static: './dist',
