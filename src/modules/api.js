@@ -3,10 +3,18 @@ async function getWeatherRequest(location) {
     const response = await fetch(
       `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=QN4SKBNRNBZPJZ8EHJNREJCUG`,
     );
-    return response.json();
+    if (response.ok) {
+      return response.json();
+    }
   } catch (err) {
-    alert(err);
+    console.error(err);
   }
 }
 
-export default getWeatherRequest;
+async function processWeatherRequest(response) {
+  const myPromise = new Promise((resolve) => resolve(response));
+  const data = await myPromise;
+  return data ? data : 'Please enter valid location';
+}
+
+export { getWeatherRequest, processWeatherRequest };
