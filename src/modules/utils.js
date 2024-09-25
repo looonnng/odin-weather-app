@@ -18,5 +18,16 @@ function getDescription(location) {
   );
 }
 
-getAddress('rochester mn');
-getDescription('rochester mn');
+function getDaysForecast(location) {
+  processWeatherRequest(getWeatherRequest(location)).then((res) =>
+    console.log(res.days),
+  );
+}
+
+function getCurrentConditions(location) {
+  processWeatherRequest(getWeatherRequest(location)).then((res) =>
+    console.log(res.currentConditions),
+  );
+}
+
+export { getAddress, getDescription, getDaysForecast, getCurrentConditions };
