@@ -1,19 +1,17 @@
-import {
-  getAddress,
-  getDescription,
-  getDaysForecast,
-  getCurrentConditions,
-} from './utils';
+import { getWeatherRequest, processWeatherRequest } from './api.js';
 
-const searchForm = document.querySelector('.search-form');
-searchForm.addEventListener('submit', handleSearch);
+function render() {
+  const searchForm = document.querySelector('.search-form');
+  searchForm.addEventListener('submit', handleSearch);
+}
 
-function handleSearch(event) {
+async function handleSearch(event) {
   event.preventDefault();
   const location = event.target[0].value;
-  getAddress(location);
-  getDescription(location);
-  getCurrentConditions(location);
-  getDaysForecast(location);
+
+  const data = await processWeatherRequest(getWeatherRequest(location));
+  console.log(data);
   event.target[0].value = '';
 }
+
+export default render;
