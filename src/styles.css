@@ -6,7 +6,12 @@
 
 html,
 body {
+  height: 100vh;
   font-family: Helvetica, Verdana, sans-serif;
+}
+
+body {
+  align-items: center;
 }
 
 .wrapper {
@@ -15,7 +20,7 @@ body {
 }
 
 .grid-layout {
-  height: 100vh;
+  height: 80vh;
   display: grid;
   grid-template-rows: repeat(4, 1fr);
 }
@@ -35,4 +40,25 @@ body {
   font-size: 1rem;
   padding: 0.5rem 0.25rem;
   border: none;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.current-weather-icon-wrapper {
+
+}
+
+.current-temperature-wrapper {
+  grid-column: 2 / span 2;
+}
+
+.current-conditions-wrapper {
+  grid-column: 4 / span 2;
+}
+
+.current-descriptions-wrapper {
+  grid-column: 6 / 9;
 }
