@@ -1,5 +1,5 @@
 import { getWeatherRequest, processWeatherRequest } from './api.js';
-import { displayCurrentWeatherIcon } from './utils.js';
+import { displayCurrentWeatherIcon, displayCurrentTemp } from './utils.js';
 
 function render() {
   const searchForm = document.querySelector('.search-form');
@@ -12,6 +12,7 @@ async function handleSearch(event) {
 
   const data = await processWeatherRequest(getWeatherRequest(location));
   displayCurrentWeatherIcon(data);
+  displayCurrentTemp(data);
   event.target[0].value = '';
 }
 
