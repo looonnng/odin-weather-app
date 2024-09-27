@@ -14,6 +14,10 @@ body {
   align-items: center;
 }
 
+a {
+  text-decoration: none;
+}
+
 .wrapper {
   width: 80%;
   margin: 0 auto;
@@ -47,8 +51,15 @@ body {
   grid-template-columns: repeat(8, 1fr);
 }
 
-.current-weather-icon-wrapper {
+.current-weather-icon-wrapper,
+.current-conditions-wrapper,
+.current-descriptions-wrapper,
+.current-temperature-wrapper {
+  align-items: center;
+}
 
+.current-weather-icon-wrapper {
+  justify-content: center;
 }
 
 .current-temperature-wrapper {
@@ -61,4 +72,24 @@ body {
 
 .current-descriptions-wrapper {
   grid-column: 6 / 9;
+}
+
+.current-temperature {
+  font-size: 3rem;
+  margin-right: auto; /* using justify-self would not work  */
+}
+
+.weather-units {
+  font-size: 1rem;
+  margin-top: 0.7rem;
+}
+
+.fahrenheit-link {
+  color: #fff;
+  padding-right: 0.3rem;
+  border-right: solid 1px gray;
+}
+
+.celsius-link {
+  padding-left: 0.3rem;
 }
