@@ -1,33 +1,22 @@
-import getWeatherRequest from './api';
-
-async function processWeatherRequest(response) {
-  const myPromise = new Promise((resolve) => resolve(response));
-  const data = await myPromise;
-  return data;
+async function getIcon(icon) {
+  const myIcon = await import(`../assets/VCWeatherIcons/${icon}.png`);
+  return myIcon;
 }
 
-function getAddress(location) {
-  processWeatherRequest(getWeatherRequest(location)).then((res) =>
-    console.log(res.address),
-  );
+async function createCurrentWeatherIcon(jsonData) {
+  const iconText = jsonData.currentConditions.icon;
+  const icon = new Image();
+  const iconResponse = await getIcon(iconText);
+  icon.src = iconResponse.default;
+  return icon;
 }
 
-function getDescription(location) {
-  processWeatherRequest(getWeatherRequest(location)).then((res) =>
-    console.log(res.description),
-  );
+export async function displayCurrentWeatherIcon(jsonData) {
+  const iconWrapper = document.querySelector('.current-weather-icon-wrapper');
+  iconWrapper.replaceChildren(); // Clear previous icon
+
+  const icon = await createCurrentWeatherIcon(jsonData);
+  iconWrapper.appendChild(icon);
 }
 
-function getDaysForecast(location) {
-  processWeatherRequest(getWeatherRequest(location)).then((res) =>
-    console.log(res.days),
-  );
-}
-
-function getCurrentConditions(location) {
-  processWeatherRequest(getWeatherRequest(location)).then((res) =>
-    console.log(res.currentConditions),
-  );
-}
-
-export { getAddress, getDescription, getDaysForecast, getCurrentConditions };
+export default { displayCurrentWeatherIcon };
