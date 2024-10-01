@@ -60,14 +60,14 @@ a {
 
 .current-weather-icon-wrapper {
   justify-content: center;
-}
 
-.current-temperature-wrapper {
-  grid-column: 2 / span 2;
+  & > img {
+    width: 95%;
+  }
 }
 
 .current-conditions-wrapper {
-  grid-column: 4 / span 2;
+  grid-column: 2 / span 4;
 }
 
 .current-descriptions-wrapper {
@@ -75,8 +75,8 @@ a {
 }
 
 .current-temperature {
-  font-size: 3rem;
-  margin-right: auto; /* using justify-self would not work  */
+  font-size: 4rem;
+  margin: 0 0.8rem;
 }
 
 .weather-units {
