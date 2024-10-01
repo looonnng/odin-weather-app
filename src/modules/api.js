@@ -13,8 +13,12 @@ async function getWeatherRequest(location) {
 
 async function processWeatherRequest(response) {
   const myPromise = new Promise((resolve) => resolve(response));
-  const data = await myPromise;
-  return data ? data : 'Please enter valid location';
+  try {
+    const data = await myPromise;
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export { getWeatherRequest, processWeatherRequest };
