@@ -2,6 +2,7 @@ import { getWeatherRequest, processWeatherRequest } from './api.js';
 import {
   displayCurrentWeatherIcon,
   displayCurrentConditions,
+  displayCurrentDescriptions,
 } from './utils.js';
 
 function render() {
@@ -18,6 +19,7 @@ async function handleSearch(event) {
   if (data) {
     displayCurrentWeatherIcon(data);
     displayCurrentConditions(data);
+    displayCurrentDescriptions(data);
     event.target[0].value = '';
     return;
   }
