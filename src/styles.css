@@ -33,6 +33,11 @@ a {
   display: flex;
 }
 
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Search section*/
 .search-wrapper {
   justify-content: center;
@@ -72,6 +77,8 @@ a {
 
 .current-descriptions-wrapper {
   grid-column: 6 / 9;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .current-temperature {
