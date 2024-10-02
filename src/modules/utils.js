@@ -82,8 +82,10 @@ export function displayCurrentDescriptions(jsonData) {
   currentDescriptionsWrapper.replaceChildren();
 
   const currentLocation = jsonData.resolvedAddress;
-  const currentDate = jsonData.currentConditions.datetime;
+  const currentTime = jsonData.currentConditions.datetime;
+  const currentTimeEpoch = jsonData.currentConditions.datetimeEpoch;
   const currentShortDescription = jsonData.currentConditions.conditions;
+  const currentWeekday = getWeekDay(currentTimeEpoch);
 
   const currentLocationElem = document.createElement('div');
   const currentDateElem = document.createElement('div');
@@ -94,7 +96,7 @@ export function displayCurrentDescriptions(jsonData) {
   currentShortDescriptionsElem.className = '';
 
   currentLocationElem.textContent = `${currentLocation}`;
-  currentDateElem.textContent = `${currentDate}`;
+  currentDateElem.textContent = `${currentWeekday} ${currentTime}`;
   currentShortDescriptionsElem.textContent = `${currentShortDescription}`;
 
   currentDescriptionsWrapper.append(
@@ -103,6 +105,22 @@ export function displayCurrentDescriptions(jsonData) {
     currentShortDescriptionsElem,
   );
 }
+
+function getWeekDay(datetime) {
+  const dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  const today = new Date(datetime * 1000).getUTCDay();
+  return dayNames[today];
+}
+
 export default {
   displayCurrentWeatherIcon,
   displayCurrentConditions,
