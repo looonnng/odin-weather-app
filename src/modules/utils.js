@@ -82,7 +82,9 @@ export function displayCurrentDescriptions(jsonData) {
   currentDescriptionsWrapper.replaceChildren();
 
   const currentLocation = jsonData.resolvedAddress;
-  const currentTime = jsonData.currentConditions.datetime;
+  const currentTime = convertToStandardTime(
+    jsonData.currentConditions.datetime,
+  );
   const currentTimeEpoch = jsonData.currentConditions.datetimeEpoch;
   const currentShortDescription = jsonData.currentConditions.conditions;
   const currentWeekday = getWeekDay(currentTimeEpoch);
@@ -117,8 +119,23 @@ function getWeekDay(datetime) {
     'Saturday',
   ];
 
+  // needs to use UTC day for accurate timezone
   const today = new Date(datetime * 1000).getUTCDay();
   return dayNames[today];
+}
+
+function convertToStandardTime(time) {
+  const [hour, min] = time.split(':');
+
+  if (Number(hour) < 12 && Number(hour) != 0) {
+    return `${hour}:${min} AM`;
+  } else if (Number(hour) >= 13) {
+    return `${Number(hour) - 12}:${min} PM`;
+  } else if (Number(hour) === 12) {
+    return `${Number(hour)}:${min} PM`;
+  } else {
+    return `${Number(hour) + 12}:${min} AM`;
+  }
 }
 
 export default {
