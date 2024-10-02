@@ -75,4 +75,36 @@ export function displayCurrentConditions(jsonData) {
   currentConditionsWrapper.append(weatherText, currentOtherConditionsWrapper);
 }
 
-export default { displayCurrentWeatherIcon, displayCurrentConditions };
+export function displayCurrentDescriptions(jsonData) {
+  const currentDescriptionsWrapper = document.querySelector(
+    '.current-descriptions-wrapper',
+  );
+  currentDescriptionsWrapper.replaceChildren();
+
+  const currentLocation = jsonData.resolvedAddress;
+  const currentDate = jsonData.currentConditions.datetime;
+  const currentShortDescription = jsonData.currentConditions.conditions;
+
+  const currentLocationElem = document.createElement('div');
+  const currentDateElem = document.createElement('div');
+  const currentShortDescriptionsElem = document.createElement('div');
+
+  currentLocationElem.className = '';
+  currentDateElem.className = '';
+  currentShortDescriptionsElem.className = '';
+
+  currentLocationElem.textContent = `${currentLocation}`;
+  currentDateElem.textContent = `${currentDate}`;
+  currentShortDescriptionsElem.textContent = `${currentShortDescription}`;
+
+  currentDescriptionsWrapper.append(
+    currentLocationElem,
+    currentDateElem,
+    currentShortDescriptionsElem,
+  );
+}
+export default {
+  displayCurrentWeatherIcon,
+  displayCurrentConditions,
+  displayCurrentDescriptions,
+};
