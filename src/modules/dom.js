@@ -3,6 +3,7 @@ import {
   displayCurrentWeatherIcon,
   displayCurrentConditions,
   displayCurrentDescriptions,
+  displayDayForecast,
 } from './utils.js';
 
 function render() {
@@ -20,6 +21,7 @@ async function handleSearch(event) {
     displayCurrentWeatherIcon(data);
     displayCurrentConditions(data);
     displayCurrentDescriptions(data);
+    displayDayForecast(data);
     event.target[0].value = '';
     return;
   }
