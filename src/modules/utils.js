@@ -3,8 +3,7 @@ async function getIcon(icon) {
   return myIcon;
 }
 
-async function createCurrentWeatherIcon(jsonData) {
-  const iconText = jsonData.currentConditions.icon;
+async function createCurrentWeatherIcon(iconText) {
   const icon = new Image();
   const iconResponse = await getIcon(iconText);
   icon.src = iconResponse.default;
@@ -15,7 +14,7 @@ export async function displayCurrentWeatherIcon(jsonData) {
   const iconWrapper = document.querySelector('.current-weather-icon-wrapper');
   iconWrapper.replaceChildren(); // Clear previous icon
 
-  const icon = await createCurrentWeatherIcon(jsonData);
+  const icon = await createCurrentWeatherIcon(jsonData.currentConditions.icon);
   iconWrapper.appendChild(icon);
 }
 
@@ -85,9 +84,10 @@ export function displayCurrentDescriptions(jsonData) {
   const currentTime = convertToStandardTime(
     jsonData.currentConditions.datetime,
   );
-  const currentTimeEpoch = jsonData.currentConditions.datetimeEpoch;
   const currentShortDescription = jsonData.currentConditions.conditions;
-  const currentWeekday = getWeekDay(currentTimeEpoch);
+  const currentTimeEpoch = jsonData.currentConditions.datetimeEpoch * 1000;
+  const currentTimeZoneOffset = jsonData.tzoffset * 3600000;
+  const currentWeekday = getWeekDay(currentTimeEpoch + currentTimeZoneOffset); // convert timezone offset to ms and times 100
 
   const currentLocationElem = document.createElement('div');
   const currentDateElem = document.createElement('div');
@@ -108,7 +108,7 @@ export function displayCurrentDescriptions(jsonData) {
   );
 }
 
-function getWeekDay(datetime) {
+function getWeekDay(time) {
   const dayNames = [
     'Sunday',
     'Monday',
@@ -120,7 +120,7 @@ function getWeekDay(datetime) {
   ];
 
   // needs to use UTC day for accurate timezone
-  const today = new Date(datetime * 1000).getUTCDay();
+  const today = new Date(time).getUTCDay();
   return dayNames[today];
 }
 
@@ -138,8 +138,40 @@ function convertToStandardTime(time) {
   }
 }
 
+export async function displayDayForecast(jsonData) {
+  const bottom = document.querySelector('.bottom');
+  const forecast = jsonData.days.slice(1, 9);
+
+  bottom.replaceChildren();
+
+  forecast.forEach(async (dayForecast) => {
+    const dayWrapper = document.createElement('div');
+    const dayText = document.createElement('div');
+    const dayIconWrapper = document.createElement('div');
+    const dayTemperature = document.createElement('div');
+    const dayTemperatureLow = document.createElement('p');
+    const dayTemperatureHigh = document.createElement('p');
+    const dayIcon = await createCurrentWeatherIcon(dayForecast.icon);
+
+    dayWrapper.className = 'day-wrapper col';
+    dayText.className = 'day-text';
+    dayIconWrapper.className = 'day-icon-wrapper';
+    dayTemperature.className = 'day-temperature flex';
+
+    dayText.textContent = `${getWeekDay(dayForecast.datetime)}`;
+    dayTemperatureLow.textContent = `${Math.ceil(dayForecast.tempmin)}°`;
+    dayTemperatureHigh.textContent = `${Math.ceil(dayForecast.tempmax)}°`;
+
+    dayIconWrapper.appendChild(dayIcon);
+    dayTemperature.append(dayTemperatureLow, dayTemperatureHigh);
+    dayWrapper.append(dayText, dayIconWrapper, dayTemperature);
+    bottom.append(dayWrapper);
+  });
+}
+
 export default {
   displayCurrentWeatherIcon,
   displayCurrentConditions,
   displayCurrentDescriptions,
+  displayDayForecast,
 };
