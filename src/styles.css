@@ -100,3 +100,8 @@ a {
 .celsius-link {
   padding-left: 0.3rem;
 }
+
+.day-temperature {
+  justify-content: center;
+  gap: 0.5rem;
+}
