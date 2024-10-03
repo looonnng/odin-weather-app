@@ -101,6 +101,10 @@ a {
   padding-left: 0.3rem;
 }
 
+.day-wrapper {
+  align-items: center;
+}
+
 .day-temperature {
   justify-content: center;
   gap: 0.5rem;
