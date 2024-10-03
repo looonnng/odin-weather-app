@@ -51,6 +51,10 @@ a {
   border: none;
 }
 
+.search-input {
+  background-color: #e9e9ed;
+}
+
 .content-wrapper {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
