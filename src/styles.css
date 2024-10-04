@@ -110,6 +110,10 @@ a {
   justify-content: space-between;
 }
 
+.day-wrapper:hover {
+  border-bottom: 1px solid gray;
+}
+
 .day-temperature {
   justify-content: center;
   gap: 0.5rem;
