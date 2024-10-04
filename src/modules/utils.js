@@ -140,7 +140,7 @@ function convertToStandardTime(time) {
 
 export async function displayDayForecast(jsonData) {
   const bottom = document.querySelector('.bottom');
-  const forecast = jsonData.days.slice(1, 9);
+  const forecast = jsonData.days.slice(0, 8);
 
   bottom.replaceChildren();
 
