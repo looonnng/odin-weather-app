@@ -111,7 +111,12 @@ a {
 }
 
 .day-wrapper:hover {
+  cursor: pointer;
   border-bottom: 1px solid gray;
+}
+
+.day-wrapper:active {
+  opacity: 0.5;
 }
 
 .day-temperature {
