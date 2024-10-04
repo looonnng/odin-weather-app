@@ -4,11 +4,15 @@ import {
   displayCurrentConditions,
   displayCurrentDescriptions,
   displayDayForecast,
+  displayForecastConditions,
+  displayForecastDescriptions,
 } from './utils.js';
 
 function render() {
   const searchForm = document.querySelector('.search-form');
+  const bottomContent = document.querySelector('.bottom');
   searchForm.addEventListener('submit', handleSearch);
+  bottomContent.addEventListener('click', handleClickBottomContent);
 }
 
 async function handleSearch(event) {
@@ -27,6 +31,16 @@ async function handleSearch(event) {
   }
 
   alert('please enter a valid location');
+}
+
+async function handleClickBottomContent(event) {
+  if (!event.target.matches('.bottom')) {
+    const targetForecast = event.target.closest('.day-wrapper').dataset.day;
+    const location = document.querySelector('.current-location').textContent;
+    const data = await processWeatherRequest(getWeatherRequest(location));
+    displayForecastConditions(data, targetForecast);
+    displayForecastDescriptions(data, targetForecast);
+  }
 }
 
 export default render;
