@@ -93,7 +93,7 @@ export function displayCurrentDescriptions(jsonData) {
   const currentDateElem = document.createElement('div');
   const currentShortDescriptionsElem = document.createElement('div');
 
-  currentLocationElem.className = '';
+  currentLocationElem.className = 'current-location';
   currentDateElem.className = '';
   currentShortDescriptionsElem.className = '';
 
@@ -140,11 +140,11 @@ function convertToStandardTime(time) {
 
 export async function displayDayForecast(jsonData) {
   const bottom = document.querySelector('.bottom');
-  const forecast = jsonData.days.slice(0, 8);
-
   bottom.replaceChildren();
 
-  forecast.forEach(async (dayForecast) => {
+  const forecast = await jsonData.days.slice(0, 8);
+
+  forecast.forEach(async (dayForecast, i) => {
     const dayWrapper = document.createElement('div');
     const dayText = document.createElement('div');
     const dayIconWrapper = document.createElement('div');
@@ -152,15 +152,17 @@ export async function displayDayForecast(jsonData) {
     const dayTemperatureLow = document.createElement('p');
     const dayTemperatureHigh = document.createElement('p');
     const dayIcon = await createCurrentWeatherIcon(dayForecast.icon);
+    const weekDay = await getWeekDay(dayForecast.datetime);
 
+    dayWrapper.dataset.day = i;
     dayWrapper.className = 'day-wrapper col';
     dayText.className = 'day-text';
     dayIconWrapper.className = 'day-icon-wrapper';
     dayTemperature.className = 'day-temperature flex';
 
-    dayText.textContent = `${getWeekDay(dayForecast.datetime)}`;
-    dayTemperatureLow.textContent = `${Math.ceil(dayForecast.tempmin)}°`;
-    dayTemperatureHigh.textContent = `${Math.ceil(dayForecast.tempmax)}°`;
+    dayText.textContent = `${weekDay}`;
+    dayTemperatureLow.textContent = await `${Math.ceil(dayForecast.tempmin)}°`;
+    dayTemperatureHigh.textContent = await `${Math.ceil(dayForecast.tempmax)}°`;
 
     dayIconWrapper.appendChild(dayIcon);
     dayTemperature.append(dayTemperatureLow, dayTemperatureHigh);
@@ -169,9 +171,97 @@ export async function displayDayForecast(jsonData) {
   });
 }
 
+export function displayForecastConditions(jsonData, forecastDay) {
+  const currentConditionsWrapper = document.querySelector(
+    '.current-conditions-wrapper',
+  );
+  currentConditionsWrapper.replaceChildren(); // Clear previous content
+
+  const currentTemp = jsonData.days[forecastDay].temp;
+  const currentPrecipitation = jsonData.days[forecastDay].precip;
+  const currentHumidity = jsonData.days[forecastDay].humidity;
+  const currentWind = jsonData.days[forecastDay].windspeed;
+
+  const weatherText = document.createElement('div');
+  const weatherUnits = document.createElement('div');
+  const fahrenheit = document.createElement('div');
+  const celsius = document.createElement('div');
+  const fahrenheitLink = document.createElement('a');
+  const celsiusLink = document.createElement('a');
+  const currentOtherConditionsWrapper = document.createElement('div');
+  const precipitationText = document.createElement('p');
+  const humidityText = document.createElement('p');
+  const windText = document.createElement('p');
+
+  weatherText.className = 'current-temperature flex';
+  weatherUnits.className = 'weather-units flex';
+  fahrenheit.className = 'fahrenheit';
+  celsius.className = 'celsius';
+  fahrenheitLink.className = 'fahrenheit-link';
+  celsiusLink.className = 'celsius-link';
+  currentOtherConditionsWrapper.className =
+    'current-other-conditions-wrapper col';
+  precipitationText.className = 'current-precipitation';
+  humidityText.className = 'current-humidity';
+  windText.className = 'current-wind';
+
+  fahrenheitLink.textContent = 'F°';
+  celsiusLink.textContent = 'C°';
+  weatherText.textContent = Math.ceil(currentTemp);
+  precipitationText.textContent = `Precipitation: ${currentPrecipitation}%`;
+  humidityText.textContent = `Humidity: ${currentHumidity}%`;
+  windText.textContent = `Wind: ${currentWind} mph`;
+
+  fahrenheitLink.href = '#';
+  celsiusLink.href = '#';
+
+  fahrenheit.appendChild(fahrenheitLink);
+  celsius.appendChild(celsiusLink);
+  weatherUnits.append(fahrenheit, celsius);
+  weatherText.appendChild(weatherUnits);
+  currentOtherConditionsWrapper.append(
+    precipitationText,
+    humidityText,
+    windText,
+  );
+  currentConditionsWrapper.append(weatherText, currentOtherConditionsWrapper);
+}
+
+export function displayForecastDescriptions(jsonData, forecastDay) {
+  const currentDescriptionsWrapper = document.querySelector(
+    '.current-descriptions-wrapper',
+  );
+  currentDescriptionsWrapper.replaceChildren();
+
+  const currentLocation = jsonData.resolvedAddress;
+
+  const currentShortDescription = jsonData.days[forecastDay].conditions;
+  const currentTimeEpoch = jsonData.days[forecastDay].datetime;
+  const currentWeekday = getWeekDay(currentTimeEpoch);
+  const currentLocationElem = document.createElement('div');
+  const currentDateElem = document.createElement('div');
+  const currentShortDescriptionsElem = document.createElement('div');
+
+  currentLocationElem.className = 'current-location';
+  currentDateElem.className = '';
+  currentShortDescriptionsElem.className = '';
+
+  currentLocationElem.textContent = `${currentLocation}`;
+  currentDateElem.textContent = `${currentWeekday}`;
+  currentShortDescriptionsElem.textContent = `${currentShortDescription}`;
+
+  currentDescriptionsWrapper.append(
+    currentLocationElem,
+    currentDateElem,
+    currentShortDescriptionsElem,
+  );
+}
+
 export default {
   displayCurrentWeatherIcon,
   displayCurrentConditions,
   displayCurrentDescriptions,
   displayDayForecast,
+  displayForecastConditions,
+  displayForecastDescriptions,
 };
