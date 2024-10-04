@@ -107,9 +107,18 @@ a {
 
 .day-wrapper {
   align-items: center;
+  justify-content: space-between;
 }
 
 .day-temperature {
   justify-content: center;
   gap: 0.5rem;
+}
+
+.day-icon-wrapper {
+  text-align: center;
+}
+
+.day-icon-wrapper > img {
+  width: 100%;
 }
