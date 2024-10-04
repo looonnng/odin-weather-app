@@ -57,7 +57,7 @@ a {
 
 .content-wrapper {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
 }
 
 .current-weather-icon-wrapper,
@@ -103,6 +103,10 @@ a {
 
 .celsius-link {
   padding-left: 0.3rem;
+}
+
+.bottom {
+  gap: 1rem;
 }
 
 .day-wrapper {
